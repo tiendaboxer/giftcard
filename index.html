@@ -99,6 +99,26 @@
       height: 25px;
     }
 
+    #toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 14px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  z-index: 999;
+}
+#toast.show {
+  opacity: 1;
+}
+
+
     @media (max-width: 768px) {
   .edge {
     display: none;
@@ -148,15 +168,24 @@
     }
 
     function copyCode(e) {
-      e.stopPropagation();
-      navigator.clipboard.writeText("BOX3-JUN25").then(() => alert("¡Código copiado!"));
-    }
+  e.stopPropagation();
+  navigator.clipboard.writeText("BOX3-JUN25").then(() => showToast());
+}
+
+function showToast() {
+  const toast = document.getElementById("toast");
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
 
     function goSite(e) {
       e.stopPropagation();
       window.open("https://tiendaboxer.store", "_blank");
     }
   </script>
+
+<div id="toast">¡Código copiado!</div>
 
 </body>
 </html>
