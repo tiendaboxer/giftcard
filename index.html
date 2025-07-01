@@ -2,77 +2,151 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GiftCard</title>
+  <title>Gift Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
+    html, body {
       margin: 0;
-      background: #f4f4f4;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+    }
+
+    video#bg-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
       height: 100vh;
+      object-fit: cover;
+      z-index: 0;
     }
 
-    .giftcard {
-      width: 341px;
-      height: 219px;
-      perspective: 1000px;
+    .card-container {
+      width: 90vw;
+      max-width: 340px;
+      height: auto;
+      aspect-ratio: 340 / 215;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      position: absolute;
+      perspective: 1200px;
       cursor: pointer;
+      z-index: 1;
     }
 
-    .card-inner {
+    .card {
       width: 100%;
       height: 100%;
       position: relative;
-      transition: transform 0.8s;
       transform-style: preserve-3d;
+      transition: transform 1s ease;
     }
 
-    .giftcard.flipped .card-inner {
+    .card.flipped {
       transform: rotateY(180deg);
     }
 
-    .card-face {
+    .side {
       position: absolute;
       width: 100%;
       height: 100%;
       backface-visibility: hidden;
-      border-radius: 12px;
+      border-radius: 14px;
       overflow: hidden;
-      background-size: cover;
-      background-position: center;
+      box-shadow: 0 12px 25px rgba(0,0,0,0.4);
     }
 
-    .card-front {
-      background-image: url("giftcard2\ \(1\).webp");
+    .side img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
-    .card-back {
-      background-image: url("giftcard3.webp");
+    .back {
       transform: rotateY(180deg);
+    }
+
+    /* Grosor simulado */
+    .edge {
+      background: #111;
+      width: 100%;
+      height: 100%;
+      transform: rotateY(90deg) translateZ(290px);
+      position: absolute;
+      backface-visibility: hidden;
+      border-radius: 14px;
+    }
+
+    .hotspot {
+      position: absolute;
+      z-index: 2;
+    }
+
+    .copy-area {
+      left: 60px;
+      bottom: 72px;
+      width: 220px;
+      height: 50px;
+    }
+
+    .link-area {
+      left: 100px;
+      bottom: 20px;
+      width: 140px;
+      height: 25px;
     }
   </style>
 </head>
 <body>
-  🔄 Tocá para girar
-  <br>
-  <br>
-<div class="giftcard" id="giftcard">
-  <div class="card-inner">
-    <div class="card-face card-front"></div>
-    <div class="card-face card-back"></div>
-  </div>
-</div>
-<br>
-👆 Tocá el cupón para copiar el código
 
-<script>
-  document.getElementById('giftcard').addEventListener('click', () => {
-    document.getElementById('giftcard').classList.toggle('flipped');
-  });
-</script>
+  <!-- Video de fondo -->
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="confetti.mp4" type="video/mp4">
+  </video>
+
+  <!-- Tarjeta -->
+  <div class="card-container" onclick="flipCard()">
+    <div class="card" id="giftCard">
+      
+      <!-- Frente -->
+      <div class="side front">
+        <img src="giftcard2 (1).webp" alt="Frente" />
+        <div class="hotspot copy-area" onclick="copyCode(event)"></div>
+        <div class="hotspot link-area" onclick="goSite(event)"></div>
+      </div>
+
+      <!-- Cara lateral (grosor simulado) -->
+      <div class="side edge"></div>
+
+      <!-- Reverso -->
+      <div class="side back">
+        <img src="giftcard3.webp" alt="Reverso" />
+        <div class="hotspot copy-area" onclick="copyCode(event)"></div>
+        <div class="hotspot link-area" onclick="goSite(event)"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Funciones -->
+  <script>
+    function flipCard() {
+      document.getElementById("giftCard").classList.toggle("flipped");
+    }
+
+    function copyCode(e) {
+      e.stopPropagation();
+      navigator.clipboard.writeText("BOX3-JUN25").then(() => alert("¡Código copiado!"));
+    }
+
+    function goSite(e) {
+      e.stopPropagation();
+      window.open("https://tiendaboxer.store", "_blank");
+    }
+  </script>
 
 </body>
 </html>
