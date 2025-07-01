@@ -11,15 +11,26 @@
       height: 100%;
       overflow: hidden;
       background: #000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
-    video#bg-video {
+    .video-wrapper {
       position: fixed;
       top: 0; left: 0;
       width: 100vw;
       height: 100vh;
-      object-fit: cover;
+      overflow: hidden;
       z-index: 0;
+      filter: blur(0.8px);
+    }
+
+    video#bg-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .card-container {
@@ -69,7 +80,6 @@
       transform: rotateY(180deg);
     }
 
-    /* Grosor simulado */
     .edge {
       background: #111;
       width: 100%;
@@ -99,93 +109,95 @@
       height: 25px;
     }
 
-    #toast {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.8);
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-size: 14px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-  z-index: 999;
-}
-#toast.show {
-  opacity: 1;
-}
+    .avisos {
+      z-index: 2;
+      
+      color: #07003a;
+    }
 
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.8);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 999;
+    }
+
+    #toast.show {
+      opacity: 1;
+    }
 
     @media (max-width: 768px) {
-  .edge {
-    display: none;
-  }
-}
-
+      .edge {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <!-- Video de fondo -->
-  <video id="bg-video" autoplay muted loop playsinline>
-    <source src="confetti.mp4" type="video/mp4">
-  </video>
+  <!-- Video de fondo con desenfoque -->
+  <div class="video-wrapper">
+    <video id="bg-video" autoplay muted loop playsinline>
+      <source src="confetti.mp4" type="video/mp4">
+    </video>
+  </div>
 
   <!-- Tarjeta -->
-   <p>🔄Tocá para girarla</p>
+  <p class="avisos">🔄Tocá para girarla</p>
+  <br><br><br><br><br><br><br><br><br><br><br><br>
+
   <div class="card-container" onclick="flipCard()">
     <div class="card" id="giftCard">
-      
-      <!-- Frente -->
       <div class="side front">
         <img src="giftcard2 (1).webp" alt="Frente" />
         <div class="hotspot copy-area" onclick="copyCode(event)"></div>
         <div class="hotspot link-area" onclick="goSite(event)"></div>
       </div>
 
-      <!-- Cara lateral (grosor simulado) -->
       <div class="side edge"></div>
 
-      <!-- Reverso -->
       <div class="side back">
         <img src="giftcard3.webp" alt="Reverso" />
         <div class="hotspot copy-area" onclick="copyCode(event)"></div>
         <div class="hotspot link-area" onclick="goSite(event)"></div>
       </div>
-
     </div>
   </div>
-  <p>👆Tocá el cupón para copiar el código</p>
 
+  <p class="avisos">👆Tocá el cupón para copiar el código</p>
 
-  <!-- Funciones -->
+  <div id="toast">¡Código copiado!</div>
+
   <script>
     function flipCard() {
       document.getElementById("giftCard").classList.toggle("flipped");
     }
 
     function copyCode(e) {
-  e.stopPropagation();
-  navigator.clipboard.writeText("BOX3-JUN25").then(() => showToast());
-}
+      e.stopPropagation();
+      navigator.clipboard.writeText("BOX3-JUN25").then(() => showToast());
+    }
 
-function showToast() {
-  const toast = document.getElementById("toast");
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2000);
-}
-
+    function showToast() {
+      const toast = document.getElementById("toast");
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2000);
+    }
 
     function goSite(e) {
       e.stopPropagation();
       window.open("https://tiendaboxer.store", "_blank");
     }
   </script>
-
-<div id="toast">¡Código copiado!</div>
 
 </body>
 </html>
